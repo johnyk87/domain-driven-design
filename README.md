@@ -38,3 +38,37 @@
 - Modules should have **low coupling** (few dependencies between them) and **high coesion** (highly related concepts within).
 - Like every other domain concept, module **names and responsibilities should be related to domain concepts**.
 - **Modules should evolve** just like any other domain concept, and they should not restrict the evolution of the domain concepts contained in them.
+
+### Aggregates
+
+- A **"cluster of associated objects"** treated as **"a unit for the purpose of data changes"**.
+- An aggregate has a **root and a boundary**:
+  - "The boundary defines what is inside the aggregate."
+  - "The root is a single, specific entity contained in the aggregate."
+- Objects outside the aggregate **can only hold references to** the entity which is **the aggregate root**.
+- **Root entities have global identity** (i.e. unique across multiple aggregates), while **entities internal to the aggregate have local identity** (i.e. unique only in the context of the aggregate).
+
+### Factories
+
+- A factory **encapsulates** the knowledge needed to create a complex object or aggregate.
+- Why factories?
+  - Object assembly should not be the assembled object's responsibility.
+  - Making consumers assemble the objects complicates the design of the client and may be delegating responsibilities to outside the boundaries of the domain.
+  - So, **building a domain object is a domain responsibility**, but it is not the built object's responsibility, hence a factory.
+- Factories can be simple factory methods, or follow more complex patterns like abstract factories or builders. The important part of using a factory is the segregation of responsibility of building a complex object, not the actual factory's design.
+- There are **two basic requirements for any good factory**:
+  - The creation method should be atomic and enforce all the invariants of the object under construction. The returned object must always be in a consistent state.
+  - The factory should be abstracted to the desired type, and not necessarily to a concrete object implementation.
+- A factory can just be a factory method on another domain object, when the internal rules of that object are central to the new object's creation.
+- Don't use factories for every object. **Sometimes a constructor is enough.**
+- Factories can also be used to reconstitute objects from another medium, like a data store representation or other network representations.
+- Reconstitution should still try to ensure the invariants, but different outcomes may be necessary when the invariants are broken.
+
+### Repositories
+
+- Repositories should be used to **abstract data access for any globally accessible object**.
+- Repositories should provide operations to obtain domain objects based on certain object attributes.
+- Repositories should also provide operations to add and remove objects, which should then be reflected on the backing data store.
+- Repositories should **hide the details of the data storage technology**.
+- Repositories should **deal with aggregates**, so they should be designed only for aggregate roots.
+- Factories make new objects; repositories find old objects. Repositories can delegate the object reconstitution to a factory.
