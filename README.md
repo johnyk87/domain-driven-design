@@ -188,14 +188,55 @@ Along the book a few design patterns are described. In this section are my notes
 
 ## Stategic design
 
+The last part of the book talks about strategic design, which is a set of recommendations to deal with higher level organization and structure.
+
 ### Bounded context
 
-TODO
+In a large enough application there may be concepts that need a slightly different representation for different purposes, or they may even be similarly named concepts that mean different things.
+
+Sometimes the best way to keep consistency in a model is to create multiple models. The name *bounded context* is the name given to the context in which a given model applies, so that two separate models can have the concepts and representations that make more sense in that particular context.
+
+Different ubiquitous languages may develop in different bounded contexts, or at least different dialects.
+
+Bounded contexts are not the same as modules. Modules are used to organize concepts inside a model, while bounded contexts separate the boundaries of distinct models. Both of them are meant as ways to organize and split the domain, but at various levels of detail.
+
+As usual when dealing with organization techniques, we should strive for model cohesion inside a bounded context, and low model coupling between bounded contexts.
+
+It is common to have distinct bounded contexts and models when there are multiple teams, so that each them works on their own bounded context.
+
+However, distinct models will have to connect at some level. To represent that integration, a context map may be useful to represent the various bounded contexts, and the points where their models connect.
+
+There can be various levels of integration between bounded contexts. The following is a list of the ones proposed in the book:
+- **Shared kernel:** a part of the model will be shared and maintained across bounded contexts. Maintaining this shared kernel is the responsibility of all the teams involved. Any concept that applies across bounded contexts should be placed in the shared kernel, with an agreed upon meaning. This model includes the code and any other related artifacts.
+- **Customer/supplier development teams:** in this approach, one team acts as a customer to another. The customer sets the requirements it needs, and the supplier is responsible for delivering an interface that meets those requirements. The delivery of changes might be subject to the budget and scheduling constraints of the supplier team.
+- **Conformist:** when collaboration is too hard, sometimes adopting another team's model (at least partially) may be the best solution for everyone involved. This reduces the need for more complex integrations and aligments, but it may leave some teams at the mercy of another team. Changes to the source model may ripple through other models. The conformist and shared kernel solutions both shared at least part of the model. The biggest difference is in how the decisions are made of what goes into that shared model. While in the shared kernel there is a clear collaboration, in the conformist version the decision is one sided.
+- **Anticorruption layer:** this one assumes a one-sided dependency, just like the conformist, but instead of adopting the other model, an extra layer is included to translate the inputs and outputs of that model into a more appropriate representation on the consumer side.
+- **Separate ways:** sometimes integration is just too costly. In some situations, creating completely independent models may be the best approach. Of course, if at any point in the future two models really need to integrate, that process will likely be much harder than when using any of the other approaches.
+- **Open host service:** this focuses on a model that is consumed by various other systems. In this case, instead of forcing a model upon others, a simpler interface would be provided that exposes the features of the model as a set of services for others to consume. This interface can use a different language than the one used in its underlying model. The goal here is to provide a common language and reduce the amount of translation needed in the consuming models. Ideally, the language used at this interface should be published and shared as a common language between all interested parties. If possible, standard languages and notations should be used, reducing the need for custom interpretations.
+
+The book also explores some guiding principles on when to choose each integration solution, and how to evolve between them, but just read the book for more details. TL;DR: let's just say it involves some politics.
 
 ### Core domain
 
-TODO
+Not everything in a domain model shares the same importance. Some concepts, as necessary as they are, may not be considered as the differentiating factors in an application's success.
 
-### Large scale structure
+In order to focus efforts on the truly important parts of the domain, it is proposed that the model be refined to clearly identify what the core domain is. The core domain should be the part of the application that truly makes it valuable for the company or user that explores it.
 
-TODO
+So, we should strive to find the part of our model that is really important, and try to move everything else to separate surrounding modules.
+
+Those separate modules can and should be as generic as possible. The goal is not necessarily to make them reusable, but to make them more flexible and able to deal with changes in requirements more easily. The main effort of maintaining a model should be dedicated to the core, not the rest of it. One possibility is using off-the-shelf solutions for this part of the application. Other options are described in the book, along with advantages and disadvantages, varying from off-the-shelf solutions to in-house development.
+
+For more about core domains and their surrounding modules, please refer to the book.
+
+### Large-scale structure
+
+One of the final chapters in the book explores ideas behind large-scale structure.
+
+The main goal of this part is to propose some patterns to organize the domain at larger scales, so that it is easier to reason about it as a whole, and to help understand how the multiple parts fit together.
+
+Here are the patterns listed in this section of the book:
+- **Evolving order:** don't try to specify too much detail and too many constraints on how each part of the application should be built. The system should be allowed to evolve, and each team should be given enough flexibility to decide on the best solutions for them, even if that requires changing the large-scale structure to better respond to the needs of the system.
+- **System metaphor:** this refers to the proposition that we can try to find a metaphor for how the system should be structured. It is supposed to drive people in their decisions regarding the large-scale structure of the system. Although it can help with communication about the system, we should be mindful of how that communication evolves, and be aware of weirdness that may indicate that the metaphor might be getting in the way or even be driving decisions in a wrong direction. When it gets to that, we should not be afraid to drop that metaphor. The example referred to in the book is that of a firewall. In buildings, a firewall is a wall that prevents fires from spreading across it. That metaphor was adopted in software to represent a layer of security in network communications that attempts to protect a given part of the network from the other networks.
+- **Responsibility layers:** some aspects of a large domain can be divided into layers. These layers are related to domain responsibilities, they are not intended to represent software related aspects. The general idea is that one part of the domain has a clear set of related functionality, and that functionality depends on other pieces of functionality. In this scenario, it is possible that the domain may be structured into two or more layers to enforce a separation between those distinct purposes, and to clarify their dependencies.
+- **Knowledge level:** some parts of a domain may need to be malleable. For instance, there are cases where some rules of the domain may need to be made configurable to users. In that case, two levels may be created: the concrete one, with the basic model that can be configured; and the knowledge level, where we make clear the concepts that are used solely for the purpose of configuring the behavior of the basic model.
+- **Pluggable component framework:** basically it proposes the creation of a common model for when multiple applications need to interoperate using the same abstractions. Instead of relying on translation layers between models, a common abstract model can be extracted, and all those that need to interoperate will conform to the abstractions in that common model. It is mentioned that this is a pattern best applied when multiple applications already exist sharing compatible abstractions. This usually requires experience in various applications of the same domain.
