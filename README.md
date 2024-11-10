@@ -16,7 +16,7 @@ Domain driven design revolves around techniques to design what the book calls as
 
 The domain is where all the **business logic** would lie, and would be at the center of all applications, **when it makes sense**. This book is clear on the fact that not every application needs or benefits from having an elaborate domain.
 
-The result of that design is what is called as the **model**. The model is a representation of the main **concepts** in the domain, their **relationships**, and the **business rules** that apply to them. However, the model should not try to represent everything there is to know about the domain, to the point of exhaustion. The model should **focus on the aspects that really matter** to the purpose of the application. This model **should be clear in the actual implementation**, i.e., the code should represent the dommain model as faithfully as any other form of representation.
+The result of that design is what is called as the **model**. The model is a representation of the main **concepts** in the domain, their **relationships**, and the **business rules** that apply to them. However, the model should not try to represent everything there is to know about the domain, to the point of exhaustion. The model should **focus on the aspects that really matter** to the purpose of the application. This model **should be clear in the actual implementation**, i.e., the code should represent the domain model as faithfully as any other form of representation.
 
 One of the most important concepts in the book is the **ubiquitous language**. This is the **common language** shared among the developers, the business experts, the customers, and any other stakeholder of the system. That language should appear in every aspect of the design, development and operation of the system. It drives the discussions between the business experts, developers and customers. It drives the concepts in the domain model. The main goal of this language is to bring everyone to the same page, and make sure that all stakeholders understand what is being discussed in any interaction. If we take nothing else from the book, a common language between all stakeholders should always be the goal for any project team.
 
@@ -122,7 +122,7 @@ Along the book a few design patterns are described. In this section are my notes
 - Those rules might become clearer when explicitly represented in the domain.
 - A **specification** is a predicate that determines if an object does or does not satisfy some criteria.
 - That specification can then be used by another object to control the conditional parts of an operation.
-- A specification can be used for multiple use cases that involves testing a condition based on variable inputs, including selection, filtering and validation.
+- A specification can be used for multiple use cases that involve testing a condition based on variable inputs, including selection, filtering and validation.
 - It can also be used as the input for building or configuring objects according to some variable criteria.
 - The whole point of this pattern is to make rules clearer, and reduce variability in algorithm implementations.
 
@@ -131,7 +131,7 @@ Along the book a few design patterns are described. In this section are my notes
 - Note: the term "interfaces" is used to refer to the public contract of an object, and not necessarily the `interface` constructs known in some programming languages.
 - This pattern refers to the recommendation to use names in the interfaces that focus on what is the purpose of an object or operation, and what a consumer should expect from them.
 - Names used in those interfaces should not be tied to how they do what they do.
-- To put is simply: interfaces should **say what**, **not how**.
+- To put it simply: interfaces should **say what**, **not how**.
 
 ### Side-effect-free functions
 
@@ -147,7 +147,7 @@ Along the book a few design patterns are described. In this section are my notes
 - **Assertions should be included in other model representations**, not just in code.
 - Assertions should be **based on the state of the inputs and outputs**, not on the procedure itself.
 - Some programming languages may support assertions natively, but others may require unit tests to enforce those assertions (or at least try to check that they hold true).
-- The value in assertions come from the fact that **they are great at detecting awkward semantics**.
+- The value in assertions comes from the fact that **they are great at detecting awkward semantics**.
   - For instance, an operation that infers moving things from one place to another, but where the source is never actually updated to reflect that the content has moved.
   - These are usually signs that the model is not aligned with the expected behavior of a procedure, and may need some changes.
 
@@ -209,7 +209,7 @@ However, distinct models will have to connect at some level. To represent that i
 There can be various levels of integration between bounded contexts. The following is a list of the ones proposed in the book:
 - **Shared kernel:** a part of the model will be shared and maintained across bounded contexts. Maintaining this shared kernel is the responsibility of all the teams involved. Any concept that applies across bounded contexts should be placed in the shared kernel, with an agreed upon meaning. This model includes the code and any other related artifacts.
 - **Customer/supplier development teams:** in this approach, one team acts as a customer to another. The customer sets the requirements it needs, and the supplier is responsible for delivering an interface that meets those requirements. The delivery of changes might be subject to the budget and scheduling constraints of the supplier team.
-- **Conformist:** when collaboration is too hard, sometimes adopting another team's model (at least partially) may be the best solution for everyone involved. This reduces the need for more complex integrations and aligments, but it may leave some teams at the mercy of another team. Changes to the source model may ripple through other models. The conformist and shared kernel solutions both shared at least part of the model. The biggest difference is in how the decisions are made of what goes into that shared model. While in the shared kernel there is a clear collaboration, in the conformist version the decision is one sided.
+- **Conformist:** when collaboration is too hard, sometimes adopting another team's model (at least partially) may be the best solution for everyone involved. This reduces the need for more complex integrations and aligments, but it may leave some teams at the mercy of another team. Changes to the source model may ripple through other models. The conformist and shared kernel solutions both share at least part of the model. The biggest difference is in how the decisions are made of what goes into that shared model. While in the shared kernel there is a clear collaboration, in the conformist version the decision is one sided.
 - **Anticorruption layer:** this one assumes a one-sided dependency, just like the conformist, but instead of adopting the other model, an extra layer is included to translate the inputs and outputs of that model into a more appropriate representation on the consumer side.
 - **Separate ways:** sometimes integration is just too costly. In some situations, creating completely independent models may be the best approach. Of course, if at any point in the future two models really need to integrate, that process will likely be much harder than when using any of the other approaches.
 - **Open host service:** this focuses on a model that is consumed by various other systems. In this case, instead of forcing a model upon others, a simpler interface would be provided that exposes the features of the model as a set of services for others to consume. This interface can use a different language than the one used in its underlying model. The goal here is to provide a common language and reduce the amount of translation needed in the consuming models. Ideally, the language used at this interface should be published and shared as a common language between all interested parties. If possible, standard languages and notations should be used, reducing the need for custom interpretations.
@@ -224,7 +224,7 @@ In order to focus efforts on the truly important parts of the domain, it is prop
 
 So, we should strive to find the part of our model that is really important, and try to move everything else to separate surrounding modules.
 
-Those separate modules can and should be as generic as possible. The goal is not necessarily to make them reusable, but to make them more flexible and able to deal with changes in requirements more easily. The main effort of maintaining a model should be dedicated to the core, not the rest of it. One possibility is using off-the-shelf solutions for this part of the application. Other options are described in the book, along with advantages and disadvantages, varying from off-the-shelf solutions to in-house development.
+Those separate modules can and should be as generic as possible. The goal is not necessarily to make them reusable, but to make them more flexible and able to deal with changes in requirements more easily. The main effort of maintaining a model should be dedicated to the core, not the rest of it. One possibility is using off-the-shelf solutions for the surrounding modules. Other options are described in the book, along with advantages and disadvantages, varying from off-the-shelf solutions to in-house development.
 
 For more about core domains and their surrounding modules, please refer to the book.
 
