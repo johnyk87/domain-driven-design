@@ -14,7 +14,7 @@ Instead of relying on indirect accounts, I took it upon myself to actually read 
 
 Domain driven design revolves around techniques to design what the book calls as the **domain**.
 
-The domain is where all the **business logic** would lie, and would be at the center of all applications, **when it makes sense**. Ths book is clear on the fact that not every application needs or benefits from having an elaborate domain.
+The domain is where all the **business logic** would lie, and would be at the center of all applications, **when it makes sense**. This book is clear on the fact that not every application needs or benefits from having an elaborate domain.
 
 The result of that design is what is called as the **model**. The model is a representation of the main **concepts** in the domain, their **relationships**, and the **business rules** that apply to them. However, the model should not try to represent everything there is to know about the domain, to the point of exhaustion. The model should **focus on the aspects that really matter** to the purpose of the application. This model **should be clear in the actual implementation**, i.e., the code should represent the dommain model as faithfully as any other form of representation.
 
